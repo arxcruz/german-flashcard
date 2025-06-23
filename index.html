@@ -8,32 +8,48 @@
 </head>
 <body>
 
-    <div id="game-container">
-        <div id="seletor-container">
-            <label for="idioma-select">Traduzir Alemão para:</label>
-            <select id="idioma-select">
-                <option value="alemao-para-portugues.csv">Português</option>
-                <option value="alemao-para-ingles.csv">Inglês</option>
-                </select>
+    <div id="tela-config">
+        <h1>Configurar Jogo</h1>
+        <div class="config-option">
+            <label for="nivel-select">Nível das palavras:</label>
+            <select id="nivel-select"></select>
         </div>
-        
-        <div id="score-container">
-            <span>Acertos: <span id="acertos-count">0</span></span>
-            <span>Erros: <span id="erros-count">0</span></span>
+        <div class="config-option">
+            <label for="quantidade-select">Quantidade de palavras:</label>
+            <select id="quantidade-select">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="all">Todas</option>
+            </select>
+        </div>
+        <button id="iniciar-btn">Iniciar Jogo</button>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <div id="game-header">
+            <div id="score-container">
+                <span>Acertos: <span id="acertos-count">0</span></span>
+                <span>Erros: <span id="erros-count">0</span></span>
+            </div>
+            <button id="novo-jogo-btn">Novo Jogo</button>
         </div>
 
         <div id="card">
-            <h2 id="verbo-display">Carregando...</h2>
+            <h2 id="verbo-display">Verbo</h2>
             <p id="feedback-display"></p>
         </div>
 
-        <div id="opcoes-container">
-            </div>
+        <div id="opcoes-container"></div>
 
         <div id="fim-de-jogo" class="hidden">
             <h2>Fim de Jogo!</h2>
             <p id="resultado-final"></p>
-            <button onclick="iniciarPartida()">Jogar Novamente</button>
+            <div id="erros-lista">
+                <h3>Palavras que você errou:</h3>
+                <ul></ul>
+            </div>
+            <button id="jogar-novamente-btn">Jogar Novamente</button>
         </div>
     </div>
 

@@ -3,107 +3,54 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #f0f2f5;
     color: #333;
     margin: 0;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
-#game-container {
+#tela-config, #game-container {
     background-color: white;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
-    width: 90%;
+    width: 100%;
     max-width: 500px;
 }
 
-/* NOVO: Estilo para o container do seletor */
-#seletor-container {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-}
+.hidden { display: none; }
 
-#seletor-container label {
-    margin-right: 10px;
-    font-size: 1rem;
-}
+/* Config Screen */
+.config-option { margin: 1.5rem 0; text-align: left; }
+.config-option label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+.config-option select { width: 100%; padding: 0.8rem; font-size: 1.1rem; border-radius: 5px; border: 1px solid #ccc; }
+#iniciar-btn { width: 100%; padding: 1rem; font-size: 1.2rem; background-color: #007bff; color: white; border: none; margin-top: 1rem; cursor: pointer; }
+#iniciar-btn:hover { background-color: #0056b3; }
 
-#idioma-select {
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-}
+/* Game Screen */
+#game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;}
+#score-container { display: flex; gap: 20px; font-size: 1.2rem; text-align: left; }
+#novo-jogo-btn { padding: 0.5rem 1rem; font-size: 0.9rem; background-color: #6c757d; color: white; border: none; cursor: pointer; border-radius: 5px; }
+#novo-jogo-btn:hover { background-color: #5a6268; }
 
-#score-container {
-    display: flex;
-    justify-content: space-around;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-}
+#card { background-color: #e9ecef; padding: 2rem; border-radius: 8px; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+#verbo-display { font-size: 2.5rem; margin: 0; }
+#feedback-display { font-size: 1.2rem; font-style: italic; color: #007bff; min-height: 20px; }
+#opcoes-container { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
 
-#card {
-    background-color: #e9ecef;
-    padding: 2rem;
-    border-radius: 8px;
-    min-height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+button { cursor: pointer; }
+#opcoes-container button { padding: 1rem; font-size: 1.1rem; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; transition: background-color 0.2s; }
+#opcoes-container button:hover { background-color: #f8f9fa; }
+button.correto { background-color: #28a745 !important; color: white; border-color: #28a745; }
+button.errado { background-color: #dc3545 !important; color: white; border-color: #dc3545; }
 
-#verbo-display {
-    font-size: 2.5rem;
-    margin: 0;
-}
-
-#feedback-display {
-    font-size: 1.2rem;
-    font-style: italic;
-    color: #007bff;
-    min-height: 20px;
-}
-
-#opcoes-container {
-    margin-top: 1.5rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-button {
-    padding: 1rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    transition: background-color 0.2s;
-}
-
-button:hover {
-    background-color: #f8f9fa;
-}
-
-button.correto {
-    background-color: #28a745;
-    color: white;
-    border-color: #28a745;
-}
-
-button.errado {
-    background-color: #dc3545;
-    color: white;
-    border-color: #dc3545;
-}
-
-#fim-de-jogo button {
-    margin-top: 1rem;
-}
-
-.hidden {
-    display: none;
-}
+/* End-game Screen */
+#fim-de-jogo { margin-top: 1rem; }
+#erros-lista { margin-top: 2rem; text-align: left; max-height: 200px; overflow-y: auto; border-top: 1px solid #eee; padding-top: 1rem; }
+#erros-lista ul { list-style: none; padding: 0; }
+#erros-lista li { padding: 0.5rem; border-bottom: 1px solid #f0f0f0; }
+#erros-lista li:last-child { border-bottom: none; }
+#jogar-novamente-btn { margin-top: 1.5rem; padding: 1rem; font-size: 1.2rem; background-color: #28a745; color: white; border: none; width: 100%; }
