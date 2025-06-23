@@ -13,10 +13,11 @@ const verboDisplay = document.getElementById('verbo-display');
 const feedbackDisplay = document.getElementById('feedback-display');
 const opcoesContainer = document.getElementById('opcoes-container');
 const acertosCount = document.getElementById('acertos-count');
-const errosCount = document.getElementById('erros-count');
 const fimDeJogoContainer = document.getElementById('fim-de-jogo');
 const resultadoFinal = document.getElementById('resultado-final');
 const errosListaContainer = document.getElementById('erros-lista');
+const errosCount = document.getElementById('erros-count');
+const verboNivelAtual = document.getElementById('verbo-nivel-atual'); // NOVO ELEMENTO
 
 // --- VARIÁVEIS DE ESTADO ---
 let currentLang = 'pt';
@@ -53,6 +54,9 @@ function setLanguage(lang) {
     }
     if (document.querySelector('#quantidade-select option[value="all"]')) {
         document.querySelector('#quantidade-select option[value="all"]').innerText = t('allWords');
+    }
+    if(document.querySelector('[data-translate-key="levelLabelShort"]')) {
+        document.querySelector('[data-translate-key="levelLabelShort"]').innerText = t('levelLabelShort');
     }
 }
 
@@ -144,6 +148,7 @@ function iniciarPartida() {
     palavrasErradas = [];
     acertosCount.innerText = acertos;
     errosCount.innerText = erros;
+    verboNivelAtual.innerText = '--';
 
     fimDeJogoContainer.classList.add('hidden');
     telaConfig.classList.add('hidden');
@@ -161,6 +166,11 @@ function carregarProximoVerbo() {
     }
     verboAtual = verbosDaPartida[indiceVerboAtual];
     verboDisplay.innerText = verboAtual.verbo;
+    
+    // *** MUDANÇA PRINCIPAL AQUI ***
+    // Atualiza o display com o nível do verbo atual
+    verboNivelAtual.innerText = verboAtual.nivel;
+
     const traducoesErradas = todosOsVerbos.filter(v => v.traducao !== verboAtual.traducao).sort(() => 0.5 - Math.random()).slice(0, 3).map(v => v.traducao);
     const opcoes = [verboAtual.traducao, ...traducoesErradas];
     opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
