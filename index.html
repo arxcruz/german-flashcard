@@ -9,30 +9,56 @@
 <body>
 
     <div id="tela-config">
-        <h1>Configurar Jogo</h1>
+        <h1 data-translate-key="configTitle">Configurar Jogo</h1>
+        
         <div class="config-option">
-            <label for="nivel-select">Nível das palavras:</label>
-            <select id="nivel-select"></select>
+            <label for="lang-select" data-translate-key="languageLabel">Idioma da Interface:</label>
+            <select id="lang-select">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+
+        <div class="config-option">
+            <label for="csv-select" data-translate-key="csvLabel">Arquivo de Palavras:</label>
+            <select id="csv-select">
+                <option value="" data-translate-key="pleaseSelectCSV">Por favor, selecione...</option>
+                <option value="alemao-para-portugues.csv">Alemão -> Português</option>
+            </select>
+        </div>
+
+        <div class="config-option">
+            <label for="nivel-select" data-translate-key="levelLabel">Nível das palavras:</label>
+            <select id="nivel-select" disabled></select>
         </div>
         <div class="config-option">
-            <label for="quantidade-select">Quantidade de palavras:</label>
-            <select id="quantidade-select">
+            <label for="quantidade-select" data-translate-key="quantityLabel">Quantidade de palavras:</label>
+            <select id="quantidade-select" disabled>
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
-                <option value="all">Todas</option>
+                <option value="all" data-translate-key="allWords">Todas</option>
             </select>
         </div>
-        <button id="iniciar-btn">Iniciar Jogo</button>
+        <div class="config-option">
+            <label for="timeout-select" data-translate-key="timeoutLabel">Tempo para o próximo card:</label>
+            <select id="timeout-select" disabled>
+                <option value="5000" data-translate-key="slow">Lento (5s)</option>
+                <option value="3500" selected data-translate-key="normal">Normal (3.5s)</option>
+                <option value="2000" data-translate-key="fast">Rápido (2s)</option>
+            </select>
+        </div>
+
+        <button id="iniciar-btn" disabled data-translate-key="startGameBtn">Iniciar Jogo</button>
     </div>
 
     <div id="game-container" class="hidden">
         <div id="game-header">
             <div id="score-container">
-                <span>Acertos: <span id="acertos-count">0</span></span>
-                <span>Erros: <span id="erros-count">0</span></span>
+                <span><span data-translate-key="correctCounter">Acertos:</span> <span id="acertos-count">0</span></span>
+                <span><span data-translate-key="errorCounter">Erros:</span> <span id="erros-count">0</span></span>
             </div>
-            <button id="novo-jogo-btn">Novo Jogo</button>
+            <button id="novo-jogo-btn" data-translate-key="newGameBtn">Novo Jogo</button>
         </div>
 
         <div id="card">
@@ -43,16 +69,17 @@
         <div id="opcoes-container"></div>
 
         <div id="fim-de-jogo" class="hidden">
-            <h2>Fim de Jogo!</h2>
+            <h2 data-translate-key="endGameTitle">Fim de Jogo!</h2>
             <p id="resultado-final"></p>
             <div id="erros-lista">
-                <h3>Palavras que você errou:</h3>
+                <h3 data-translate-key="errorListTitle">Palavras que você errou:</h3>
                 <ul></ul>
             </div>
-            <button id="jogar-novamente-btn">Jogar Novamente</button>
+            <button id="jogar-novamente-btn" data-translate-key="playAgainBtn">Jogar Novamente</button>
         </div>
     </div>
 
+    <script src="translations.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -20,7 +20,11 @@ body {
     width: 100%;
     max-width: 500px;
 }
-
+/* Adiciona um estilo visual para elementos desabilitados */
+select:disabled, button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .hidden { display: none; }
 
 /* Config Screen */
