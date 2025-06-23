@@ -35,6 +35,7 @@ const translations = {
     slow: "Lento (5s)",
     normal: "Normal (3.5s)",
     fast: "Rápido (2s)",
+    superfast: "Super rápido (1s)",
     pleaseSelectCSV: "Por favor, selecione um arquivo de palavras para começar."
   },
 
@@ -74,6 +75,7 @@ const translations = {
     slow: "Slow (5s)",
     normal: "Normal (3.5s)",
     fast: "Fast (2s)",
+    superfast: "Super fast (1s)",
     pleaseSelectCSV: "Please select a word file to begin."
   }
 };
