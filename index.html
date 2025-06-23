@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards de Alemão</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="seletor-container">
+            <label for="idioma-select">Traduzir Alemão para:</label>
+            <select id="idioma-select">
+                <option value="alemao-para-portugues.csv">Português</option>
+                <option value="alemao-para-ingles.csv">Inglês</option>
+                </select>
+        </div>
+        
+        <div id="score-container">
+            <span>Acertos: <span id="acertos-count">0</span></span>
+            <span>Erros: <span id="erros-count">0</span></span>
+        </div>
+
+        <div id="card">
+            <h2 id="verbo-display">Carregando...</h2>
+            <p id="feedback-display"></p>
+        </div>
+
+        <div id="opcoes-container">
+            </div>
+
+        <div id="fim-de-jogo" class="hidden">
+            <h2>Fim de Jogo!</h2>
+            <p id="resultado-final"></p>
+            <button onclick="iniciarPartida()">Jogar Novamente</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

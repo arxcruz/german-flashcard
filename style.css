@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+}
+
+#game-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+}
+
+/* NOVO: Estilo para o container do seletor */
+#seletor-container {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+#seletor-container label {
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+#idioma-select {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+#score-container {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+#card {
+    background-color: #e9ecef;
+    padding: 2rem;
+    border-radius: 8px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#verbo-display {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+#feedback-display {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #007bff;
+    min-height: 20px;
+}
+
+#opcoes-container {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+button {
+    padding: 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #f8f9fa;
+}
+
+button.correto {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+button.errado {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+#fim-de-jogo button {
+    margin-top: 1rem;
+}
+
+.hidden {
+    display: none;
+}
