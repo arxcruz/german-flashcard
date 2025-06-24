@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,46 +15,266 @@ body {
     background-color: white;
     padding: 2rem;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     text-align: center;
     width: 100%;
     max-width: 500px;
 }
-/* Adiciona um estilo visual para elementos desabilitados */
+
+.hidden { 
+    display: none; 
+}
+
+/* --- Tela de Configuração --- */
+.config-option { 
+    margin: 1.25rem 0; 
+    text-align: left; 
+}
+
+.config-option label { 
+    display: block; 
+    margin-bottom: 0.5rem; 
+    font-weight: 600;
+    color: #444;
+}
+
+.config-option select { 
+    width: 100%; 
+    padding: 0.8rem; 
+    font-size: 1rem; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    background-color: #fff;
+}
+
 select:disabled, button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background-color: #f9f9f9;
 }
-.hidden { display: none; }
 
-/* Config Screen */
-.config-option { margin: 1.5rem 0; text-align: left; }
-.config-option label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
-.config-option select { width: 100%; padding: 0.8rem; font-size: 1.1rem; border-radius: 5px; border: 1px solid #ccc; }
-#iniciar-btn { width: 100%; padding: 1rem; font-size: 1.2rem; background-color: #007bff; color: white; border: none; margin-top: 1rem; cursor: pointer; }
-#iniciar-btn:hover { background-color: #0056b3; }
+#iniciar-btn { 
+    width: 100%; 
+    padding: 1rem; 
+    font-size: 1.2rem; 
+    font-weight: bold;
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    margin-top: 1rem; 
+    cursor: pointer; 
+    border-radius: 5px;
+}
 
-/* Game Screen */
-#game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;}
-#score-container { display: flex; gap: 20px; font-size: 1.2rem; text-align: left; }
-#novo-jogo-btn { padding: 0.5rem 1rem; font-size: 0.9rem; background-color: #6c757d; color: white; border: none; cursor: pointer; border-radius: 5px; }
-#novo-jogo-btn:hover { background-color: #5a6268; }
+#iniciar-btn:hover:not(:disabled) { 
+    background-color: #0056b3; 
+}
 
-#card { background-color: #e9ecef; padding: 2rem; border-radius: 8px; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
-#verbo-display { font-size: 2.5rem; margin: 0; }
-#feedback-display { font-size: 1.2rem; font-style: italic; color: #007bff; min-height: 20px; }
-#opcoes-container { margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+/* Seção de Treino de Erros */
+#secao-treino-erros {
+    background-color: #fffbe6;
+    border: 1px solid #ffe58f;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+}
 
-button { cursor: pointer; }
-#opcoes-container button { padding: 1rem; font-size: 1.1rem; border: 1px solid #ccc; border-radius: 5px; background-color: #fff; transition: background-color 0.2s; }
-#opcoes-container button:hover { background-color: #f8f9fa; }
-button.correto { background-color: #28a745 !important; color: white; border-color: #28a745; }
-button.errado { background-color: #dc3545 !important; color: white; border-color: #dc3545; }
+#contador-erros-salvos {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #d46b08;
+}
 
-/* End-game Screen */
-#fim-de-jogo { margin-top: 1rem; }
-#erros-lista { margin-top: 2rem; text-align: left; max-height: 200px; overflow-y: auto; border-top: 1px solid #eee; padding-top: 1rem; }
-#erros-lista ul { list-style: none; padding: 0; }
-#erros-lista li { padding: 0.5rem; border-bottom: 1px solid #f0f0f0; }
-#erros-lista li:last-child { border-bottom: none; }
-#jogar-novamente-btn { margin-top: 1.5rem; padding: 1rem; font-size: 1.2rem; background-color: #28a745; color: white; border: none; width: 100%; }
+.botoes-treino {
+    display: flex;
+    gap: 1rem;
+}
+
+#treinar-erros-btn {
+    flex-grow: 1;
+    background-color: #faad14;
+    color: #fff;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#treinar-erros-btn:hover {
+    background-color: #d48806;
+}
+
+.btn-secundario {
+    background: none;
+    border: 1px solid #ccc;
+    color: #555;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-secundario:hover {
+    background-color: #f0f0f0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 1.5rem 0;
+}
+
+#iniciar-novo-jogo-label {
+    text-align: center;
+    color: #888;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+
+/* --- Tela do Jogo --- */
+#game-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1rem; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#score-container { 
+    display: flex; 
+    gap: 20px; 
+    font-size: 1rem; 
+    text-align: left; 
+    flex-grow: 1;
+}
+#score-container span {
+    font-weight: 500;
+}
+
+#novo-jogo-btn { 
+    padding: 0.5rem 1rem; 
+    font-size: 0.9rem; 
+    background-color: #6c757d; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    border-radius: 5px; 
+}
+#novo-jogo-btn:hover { 
+    background-color: #5a6268; 
+}
+
+#card { 
+    background-color: #e9ecef; 
+    padding: 2rem; 
+    border-radius: 8px; 
+    min-height: 150px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+}
+
+#verbo-display { 
+    font-size: 2.5rem; 
+    margin: 0; 
+    color: #000;
+}
+
+#feedback-display { 
+    font-size: 1.2rem; 
+    font-style: italic; 
+    color: #007bff; 
+    min-height: 20px; 
+    margin-top: 1rem;
+}
+
+#opcoes-container { 
+    margin-top: 1.5rem; 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+    gap: 1rem; 
+}
+
+#opcoes-container button { 
+    padding: 1rem; 
+    font-size: 1.1rem; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #fff; 
+    transition: background-color 0.2s, transform 0.1s; 
+    cursor: pointer;
+}
+
+#opcoes-container button:hover:not(:disabled) { 
+    background-color: #f8f9fa; 
+    transform: translateY(-2px);
+}
+
+button.correto { 
+    background-color: #28a745 !important; 
+    color: white; 
+    border-color: #28a745; 
+}
+
+button.errado { 
+    background-color: #dc3545 !important; 
+    color: white; 
+    border-color: #dc3545; 
+}
+
+/* --- Tela de Fim de Jogo --- */
+#fim-de-jogo { 
+    margin-top: 1rem; 
+}
+
+#erros-lista { 
+    margin-top: 2rem; 
+    text-align: left; 
+    max-height: 200px; 
+    overflow-y: auto; 
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+#erros-lista h3 {
+    margin-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+#erros-lista ul { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0;
+}
+
+#erros-lista li { 
+    padding: 0.5rem; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+#erros-lista li:last-child { 
+    border-bottom: none; 
+}
+
+#jogar-novamente-btn { 
+    margin-top: 1.5rem; 
+    padding: 1rem; 
+    font-size: 1.2rem; 
+    background-color: #28a745; 
+    color: white; 
+    border: none; 
+    width: 100%; 
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#jogar-novamente-btn:hover {
+    background-color: #218838;
+}

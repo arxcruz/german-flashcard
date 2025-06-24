@@ -19,6 +19,18 @@
             </select>
         </div>
 
+        <div id="secao-treino-erros" class="hidden">
+            <p id="contador-erros-salvos">Você tem X palavras para treinar.</p>
+            <div class="botoes-treino">
+                <button id="treinar-erros-btn">Treinar Palavras Erradas</button>
+                <button id="limpar-erros-btn" class="btn-secundario">Limpar Lista</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <p id="iniciar-novo-jogo-label">... ou inicie um novo jogo normal:</p>
+
         <div class="config-option">
             <label for="csv-select" data-translate-key="csvLabel">Arquivo de Palavras:</label>
             <select id="csv-select">
@@ -50,7 +62,6 @@
                 <option value="5000" data-translate-key="slow">Lento (5s)</option>
                 <option value="3500" selected data-translate-key="normal">Normal (3.5s)</option>
                 <option value="2000" data-translate-key="fast">Rápido (2s)</option>
-                <option value="1000" data-translate-key="superfast">Super rápido (1s)</option>
             </select>
         </div>
 
@@ -66,6 +77,7 @@
             </div>
             <button id="novo-jogo-btn" data-translate-key="newGameBtn">Novo Jogo</button>
         </div>
+
         <div id="card">
             <h2 id="verbo-display">Verbo</h2>
             <p id="feedback-display"></p>

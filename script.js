@@ -1,4 +1,5 @@
 // --- ELEMENTOS DA PÁGINA ---
+// (nenhuma mudança aqui, todas as variáveis permanecem)
 const telaConfig = document.getElementById('tela-config');
 const gameContainer = document.getElementById('game-container');
 const langSelect = document.getElementById('lang-select');
@@ -13,15 +14,22 @@ const verboDisplay = document.getElementById('verbo-display');
 const feedbackDisplay = document.getElementById('feedback-display');
 const opcoesContainer = document.getElementById('opcoes-container');
 const acertosCount = document.getElementById('acertos-count');
+const errosCount = document.getElementById('erros-count');
+const verboNivelAtual = document.getElementById('verbo-nivel-atual');
 const fimDeJogoContainer = document.getElementById('fim-de-jogo');
 const resultadoFinal = document.getElementById('resultado-final');
 const errosListaContainer = document.getElementById('erros-lista');
-const errosCount = document.getElementById('erros-count');
-const verboNivelAtual = document.getElementById('verbo-nivel-atual'); // NOVO ELEMENTO
+const secaoTreinoErros = document.getElementById('secao-treino-erros');
+const contadorErrosSalvos = document.getElementById('contador-erros-salvos');
+const treinarErrosBtn = document.getElementById('treinar-erros-btn');
+const limparErrosBtn = document.getElementById('limpar-erros-btn');
+const iniciarNovoJogoLabel = document.getElementById('iniciar-novo-jogo-label');
+
 
 // --- VARIÁVEIS DE ESTADO ---
 let currentLang = 'pt';
-let todosOsVerbos = [];
+let MASTER_VERB_LIST = []; // NOVO: Lista mestra e imutável de todos os verbos carregados
+let todosOsVerbos = []; // Usado para filtragem, pode ser modificado
 let verbosDaPartida = [];
 let palavrasErradas = [];
 let verboAtual = null;
@@ -30,6 +38,8 @@ let erros = 0;
 let indiceVerboAtual = 0;
 let tempoTimer = 3500;
 let ultimasConfiguracoes = {};
+const STORAGE_KEY = 'errosAnteriores';
+let isTrainingMode = false;
 
 // --- LÓGICA DE TRADUÇÃO ---
 function t(key, replacements = {}) {
@@ -43,104 +53,114 @@ function t(key, replacements = {}) {
 function setLanguage(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-translate-key]').forEach(element => {
-        element.innerText = t(element.dataset.translateKey);
+        const key = element.dataset.translateKey;
+        if (element) element.innerText = t(key);
     });
-    // Garante que as opções dinâmicas também sejam traduzidas
-    if (csvSelect.querySelector('option[value=""]')) {
-        csvSelect.querySelector('option[value=""]').innerText = t('pleaseSelectCSV');
-    }
-    if (nivelSelect.querySelector('option[value="all"]')) {
-        nivelSelect.querySelector('option[value="all"]').innerText = t('allLevels');
-    }
-    if (document.querySelector('#quantidade-select option[value="all"]')) {
-        document.querySelector('#quantidade-select option[value="all"]').innerText = t('allWords');
-    }
-    if(document.querySelector('[data-translate-key="levelLabelShort"]')) {
-        document.querySelector('[data-translate-key="levelLabelShort"]').innerText = t('levelLabelShort');
-    }
+    updateTrainSectionVisibility();
+}
+
+// --- FUNÇÕES DE INTERAÇÃO COM LOCALSTORAGE ---
+function getSavedErrors() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+function saveErrors(newErrors) {
+    if (newErrors.length === 0) return;
+    const savedErrors = getSavedErrors();
+    const combinedErrors = [...savedErrors, ...newErrors];
+    const uniqueErrorsMap = new Map(combinedErrors.map(error => [error.verbo, error]));
+    const uniqueErrors = [...uniqueErrorsMap.values()];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(uniqueErrors));
+}
+
+function clearSavedErrors() {
+    localStorage.removeItem(STORAGE_KEY);
+    alert(t('errorListCleared'));
+    updateTrainSectionVisibility();
 }
 
 // --- FUNÇÕES DO JOGO ---
+function updateTrainSectionVisibility() {
+    const savedErrors = getSavedErrors();
+    if (savedErrors.length > 0) {
+        contadorErrosSalvos.innerText = t('savedErrorsCounter', { count: savedErrors.length });
+        secaoTreinoErros.classList.remove('hidden');
+    } else {
+        secaoTreinoErros.classList.add('hidden');
+    }
+}
+
 async function prepararJogo(fileName) {
     if (!fileName) return;
-
-    console.log("--- INICIANDO DIAGNÓSTICO ---");
-    console.log("Passo 1: Tentando carregar o arquivo:", fileName);
-
     [nivelSelect, quantidadeSelect, timeoutSelect, iniciarBtn].forEach(el => el.disabled = true);
     nivelSelect.innerHTML = `<option>${t('loading')}</option>`;
-
     try {
         const response = await fetch(fileName);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
         const data = await response.text();
-        console.log("Passo 2: Arquivo carregado com sucesso. Conteúdo (primeiros 150 caracteres):", data.substring(0, 150));
-
-        const lines = data.trim().split('\n');
-        console.log(`Passo 3: Arquivo dividido em ${lines.length} linhas.`);
-
-        // Usamos .slice(1) para remover a primeira linha (o cabeçalho) antes de processar
-        todosOsVerbos = lines.slice(1).filter(line => line.trim() !== '').map(line => {
+        
+        const parsedVerbs = data.trim().split('\n').slice(1).filter(line => line.trim() !== '').map(line => {
             const columns = line.split('|').map(field => {
                 const trimmedField = field.trim();
                 return (trimmedField.startsWith('"') && trimmedField.endsWith('"')) 
                     ? trimmedField.substring(1, trimmedField.length - 1) 
                     : trimmedField;
             });
-            if (columns.length !== 4) {
-                console.warn('AVISO: Linha malformada no CSV ignorada (não tem 4 colunas):', line);
-                return null;
-            }
+            if (columns.length !== 4) return null;
             const [verbo, traducao, exemplo, nivel] = columns;
             return { verbo, traducao, exemplo, nivel };
-        }).filter(Boolean); // Filtra quaisquer linhas nulas (malformadas)
+        }).filter(Boolean);
 
-        console.log("Passo 4: Verbos processados. Total de verbos válidos:", todosOsVerbos.length, todosOsVerbos);
+        // ATUALIZAÇÃO: Popula a lista mestra e a lista de trabalho
+        MASTER_VERB_LIST = [...parsedVerbs];
+        todosOsVerbos = [...parsedVerbs];
 
         const niveis = [...new Set(todosOsVerbos.map(v => v.nivel))].sort();
-        console.log("Passo 5: Níveis únicos encontrados:", niveis);
-
         nivelSelect.innerHTML = `<option value="all">${t('allLevels')}</option>`;
         niveis.forEach(nivel => {
-            if (nivel) { 
+            if (nivel) {
                 nivelSelect.innerHTML += `<option value="${nivel}">${nivel}</option>`;
             }
         });
-
-        console.log("Passo 6: Habilitando controles...");
         [nivelSelect, quantidadeSelect, timeoutSelect, iniciarBtn].forEach(el => el.disabled = false);
-        console.log("--- DIAGNÓSTICO CONCLUÍDO COM SUCESSO ---");
-
     } catch (error) {
-        console.error("ERRO CRÍTICO DENTRO DO BLOCO TRY/CATCH:", error);
+        console.error("Erro ao carregar ou processar o arquivo CSV:", error);
         nivelSelect.innerHTML = `<option>Erro!</option>`;
         alert(t('csvError'));
     }
 }
 
-// *** LÓGICA CENTRALIZADA EM UMA ÚNICA FUNÇÃO ***
-function iniciarPartida() {
-    const nivel = nivelSelect.value;
-    const quantidade = quantidadeSelect.value;
-    const timeout = timeoutSelect.value;
-    const csvFile = csvSelect.value;
-    
-    tempoTimer = parseInt(timeout); 
-    ultimasConfiguracoes = { nivel, quantidade, timeout, csvFile };
+function iniciarPartida(listaCustomizada = null) {
+    isTrainingMode = !!listaCustomizada; // Define o modo de treino se uma lista customizada for passada
 
-    let verbosFiltrados = todosOsVerbos;
-    if (nivel !== 'all') {
-        verbosFiltrados = todosOsVerbos.filter(v => v.nivel === nivel);
-    }
-    
-    if (verbosFiltrados.length === 0) {
-        alert(t('noWordsForLevel', { level: nivel }));
-        return;
+    if (isTrainingMode) {
+        verbosDaPartida = [...listaCustomizada].sort(() => 0.5 - Math.random());
+    } else {
+        const nivel = nivelSelect.value;
+        const quantidade = quantidadeSelect.value;
+        todosOsVerbos = [...MASTER_VERB_LIST]; // Garante que estamos começando com a lista fresca
+        let verbosFiltrados = todosOsVerbos;
+        if (nivel !== 'all') {
+            verbosFiltrados = todosOsVerbos.filter(v => v.nivel === nivel);
+        }
+        if (verbosFiltrados.length === 0) {
+            alert(t('noWordsForLevel', { level: nivel }));
+            return;
+        }
+        verbosFiltrados.sort(() => 0.5 - Math.random());
+        verbosDaPartida = (quantidade === 'all') ? verbosFiltrados : verbosFiltrados.slice(0, parseInt(quantidade));
     }
 
-    verbosFiltrados.sort(() => 0.5 - Math.random());
-    verbosDaPartida = (quantidade === 'all') ? verbosFiltrados : verbosFiltrados.slice(0, parseInt(quantidade));
+    if (verbosDaPartida.length === 0) return;
+
+    tempoTimer = parseInt(timeoutSelect.value); 
+    ultimasConfiguracoes = {
+        nivel: nivelSelect.value,
+        quantidade: quantidadeSelect.value,
+        timeout: timeoutSelect.value,
+        csvFile: csvSelect.value,
+        isTraining: isTrainingMode
+    };
     
     acertos = 0;
     erros = 0;
@@ -153,7 +173,6 @@ function iniciarPartida() {
     fimDeJogoContainer.classList.add('hidden');
     telaConfig.classList.add('hidden');
     gameContainer.classList.remove('hidden');
-
     carregarProximoVerbo();
 }
 
@@ -166,13 +185,25 @@ function carregarProximoVerbo() {
     }
     verboAtual = verbosDaPartida[indiceVerboAtual];
     verboDisplay.innerText = verboAtual.verbo;
-    
-    // *** MUDANÇA PRINCIPAL AQUI ***
-    // Atualiza o display com o nível do verbo atual
     verboNivelAtual.innerText = verboAtual.nivel;
+    
+    // CORREÇÃO: Usa sempre a MASTER_VERB_LIST para gerar opções, garantindo consistência
+    const traducoesErradas = MASTER_VERB_LIST
+        .filter(v => v.traducao !== verboAtual.traducao)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3)
+        .map(v => v.traducao);
 
-    const traducoesErradas = todosOsVerbos.filter(v => v.traducao !== verboAtual.traducao).sort(() => 0.5 - Math.random()).slice(0, 3).map(v => v.traducao);
     const opcoes = [verboAtual.traducao, ...traducoesErradas];
+    
+    // Garante que sempre haja 4 opções (se possível)
+    while (opcoes.length < 4 && opcoes.length < MASTER_VERB_LIST.length) {
+        const randomVerb = MASTER_VERB_LIST[Math.floor(Math.random() * MASTER_VERB_LIST.length)];
+        if (!opcoes.includes(randomVerb.traducao)) {
+            opcoes.push(randomVerb.traducao);
+        }
+    }
+
     opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
         const button = document.createElement('button');
         button.innerText = opcao;
@@ -184,11 +215,21 @@ function carregarProximoVerbo() {
 function verificarResposta(opcaoSelecionada, botaoClicado) {
     const botoes = opcoesContainer.querySelectorAll('button');
     botoes.forEach(b => b.disabled = true);
+
     if (opcaoSelecionada === verboAtual.traducao) {
         acertos++;
         acertosCount.innerText = acertos;
         botaoClicado.classList.add('correto');
         feedbackDisplay.innerText = `${t('correctFeedback')} ${verboAtual.exemplo}`;
+
+        // MELHORIA: Salva progresso do treino em tempo real
+        if (isTrainingMode) {
+            const savedErrors = getSavedErrors();
+            const updatedErrors = savedErrors.filter(error => error.verbo !== verboAtual.verbo);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedErrors));
+            updateTrainSectionVisibility(); // Atualiza o contador na tela de config em tempo real
+        }
+
     } else {
         erros++;
         errosCount.innerText = erros;
@@ -199,6 +240,7 @@ function verificarResposta(opcaoSelecionada, botaoClicado) {
             if (b.innerText === verboAtual.traducao) b.classList.add('correto');
         });
     }
+
     setTimeout(() => {
         indiceVerboAtual++;
         carregarProximoVerbo();
@@ -210,6 +252,16 @@ function mostrarFimDeJogo() {
     verboDisplay.innerText = t('endGameTitle');
     feedbackDisplay.innerText = '';
     resultadoFinal.innerText = t('finalScore', { acertos: acertos, erros: erros });
+    verboNivelAtual.innerText = '--';
+    
+    if (isTrainingMode) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(palavrasErradas));
+    } else {
+        saveErrors(palavrasErradas);
+    }
+    
+    updateTrainSectionVisibility();
+    
     if (palavrasErradas.length > 0) {
         const listaUl = errosListaContainer.querySelector('ul');
         listaUl.innerHTML = '';
@@ -218,10 +270,10 @@ function mostrarFimDeJogo() {
             li.innerHTML = `<strong>${palavra.verbo}:</strong> ${palavra.traducao}`;
             listaUl.appendChild(li);
         });
-        errosListaContainer.style.display = 'block';
+        errosListaContainer.querySelector('h3').style.display = 'block';
     } else {
+        errosListaContainer.querySelector('h3').style.display = 'none';
         errosListaContainer.querySelector('ul').innerHTML = `<li>${t('noErrors')}</li>`;
-        errosListaContainer.style.display = 'block';
     }
     fimDeJogoContainer.classList.remove('hidden');
 }
@@ -233,20 +285,34 @@ csvSelect.addEventListener('change', (e) => prepararJogo(e.target.value));
 
 document.addEventListener('DOMContentLoaded', () => {
     setLanguage(langSelect.value);
+    updateTrainSectionVisibility();
 });
 
-// O botão de Iniciar agora chama a função centralizada
-iniciarBtn.addEventListener('click', iniciarPartida);
+iniciarBtn.addEventListener('click', () => iniciarPartida());
 
-// O botão de Jogar Novamente também usa a função centralizada, de forma mais limpa
+treinarErrosBtn.addEventListener('click', () => {
+    const savedErrors = getSavedErrors();
+    if (savedErrors.length === 0) {
+        alert(t('noSavedErrors'));
+        return;
+    }
+    iniciarPartida(savedErrors);
+});
+
+limparErrosBtn.addEventListener('click', clearSavedErrors);
+
 jogarNovamenteBtn.addEventListener('click', () => {
-    csvSelect.value = ultimasConfiguracoes.csvFile;
-    prepararJogo(ultimasConfiguracoes.csvFile).then(() => {
-        nivelSelect.value = ultimasConfiguracoes.nivel;
-        quantidadeSelect.value = ultimasConfiguracoes.quantidade;
-        timeoutSelect.value = ultimasConfiguracoes.timeout;
-        iniciarPartida();
-    });
+    if (ultimasConfiguracoes.isTraining) {
+        iniciarPartida(getSavedErrors());
+    } else {
+        csvSelect.value = ultimasConfiguracoes.csvFile;
+        prepararJogo(ultimasConfiguracoes.csvFile).then(() => {
+            nivelSelect.value = ultimasConfiguracoes.nivel;
+            quantidadeSelect.value = ultimasConfiguracoes.quantidade;
+            timeoutSelect.value = ultimasConfiguracoes.timeout;
+            iniciarPartida();
+        });
+    }
 });
 
 novoJogoBtn.addEventListener('click', () => {

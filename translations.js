@@ -9,11 +9,24 @@ const translations = {
     allWords: "Todas",
     startGameBtn: "Iniciar Jogo",
     languageLabel: "Idioma da Interface:",
+    csvLabel: "Arquivo de Palavras:",
+    timeoutLabel: "Tempo para o próximo card:",
+    slow: "Lento (5s)",
+    normal: "Normal (3.5s)",
+    fast: "Rápido (2s)",
+    pleaseSelectCSV: "Por favor, selecione...",
+    savedErrorsCounter: "Você tem {count} palavras para treinar.",
+    noSavedErrors: "Não há erros salvos para treinar.",
+    trainWrongWordsBtn: "Treinar Palavras Erradas",
+    clearListBtn: "Limpar Lista",
+    startNormalGameLabel: "... ou inicie um novo jogo normal:",
+    errorListCleared: "Lista de erros foi limpa!",
 
     // Tela do Jogo
     newGameBtn: "Novo Jogo",
     correctCounter: "Acertos:",
     errorCounter: "Erros:",
+    levelLabelShort: "Nível:",
     loading: "Carregando...",
     
     // Feedback
@@ -29,15 +42,7 @@ const translations = {
     
     // Alertas e Erros
     noWordsForLevel: "Não há palavras do nível {level} na lista.",
-    csvError: "Erro ao carregar dados do jogo. Verifique o arquivo CSV.",
-    csvLabel: "Arquivo de Palavras:",
-    timeoutLabel: "Tempo para o próximo card:",
-    slow: "Lento (5s)",
-    normal: "Normal (3.5s)",
-    fast: "Rápido (2s)",
-    superfast: "Super rápido (1s)",
-    pleaseSelectCSV: "Por favor, selecione um arquivo de palavras para começar.",
-    levelLabelShort: "Nível:",
+    csvError: "Erro ao carregar dados do jogo. Verifique o arquivo CSV."
   },
 
   // --- Traduções em Inglês ---
@@ -50,11 +55,25 @@ const translations = {
     allWords: "All",
     startGameBtn: "Start Game",
     languageLabel: "Interface Language:",
+    csvLabel: "Word File:",
+    timeoutLabel: "Time to next card:",
+    slow: "Slow (5s)",
+    normal: "Normal (3.5s)",
+    fast: "Fast (2s)",
+    pleaseSelectCSV: "Please select...",
+    savedErrorsCounter: "You have {count} words to train.",
+    noSavedErrors: "There are no saved errors to train.",
+    trainWrongWordsBtn: "Train Wrong Words",
+    clearListBtn: "Clear List",
+    startNormalGameLabel: "... or start a new normal game:",
+    errorListCleared: "Error list has been cleared!",
+
 
     // Game Screen
     newGameBtn: "New Game",
     correctCounter: "Correct:",
     errorCounter: "Errors:",
+    levelLabelShort: "Level:",
     loading: "Loading...",
 
     // Feedback
@@ -70,14 +89,6 @@ const translations = {
 
     // Alerts and Errors
     noWordsForLevel: "There are no words for level {level} in the list.",
-    csvError: "Error loading game data. Please check the CSV file.",
-    csvLabel: "Word File:",
-    timeoutLabel: "Time to next card:",
-    slow: "Slow (5s)",
-    normal: "Normal (3.5s)",
-    fast: "Fast (2s)",
-    superfast: "Super fast (1s)",
-    pleaseSelectCSV: "Please select a word file to begin.",
-    levelLabelShort: "Level:",
+    csvError: "Error loading game data. Please check the CSV file."
   }
 };
