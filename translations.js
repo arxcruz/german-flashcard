@@ -90,5 +90,51 @@ const translations = {
     // Alerts and Errors
     noWordsForLevel: "There are no words for level {level} in the list.",
     csvError: "Error loading game data. Please check the CSV file."
+  },
+
+  // --- Traduções em Russo ---
+  ru: {
+    // Setup Screen
+    configTitle: "Настройка игры",
+    levelLabel: "Уровень слов:",
+    allLevels: "Все уровни",
+    quantityLabel: "Количество слов:",
+    allWords: "Все",
+    startGameBtn: "Начать игру",
+    languageLabel: "Язык интерфейса:",
+    csvLabel: "Файл слов:",
+    timeoutLabel: "Время до следующей карточки:",
+    slow: "Медленно (5с)",
+    normal: "Нормально (3.5с)",
+    fast: "Быстро (2с)",
+    pleaseSelectCSV: "Пожалуйста выберите...",
+    savedErrorsCounter: "У вас {count} слов для тренировки.",
+    noSavedErrors: "Нет сохраненных ошибок для тренировки.",
+    trainWrongWordsBtn: "Тренировать слова с ошибками",
+    clearListBtn: "Очистить список",
+    startNormalGameLabel: "... или начните новую обычную игру:",
+    errorListCleared: "Список ошибок очищен!",
+
+    // Game Screen
+    newGameBtn: "Новая игра",
+    correctCounter: "Правильно:",
+    errorCounter: "Ошибки:",
+    levelLabelShort: "Уровень:",
+    loading: "Загрузка...",
+
+    // Feedback
+    correctFeedback: "Правильно! Пример:",
+    incorrectFeedback: "Неправильно! Правильный ответ был:",
+
+    // End of Game
+    endGameTitle: "Игра окончена!",
+    finalScore: "Ваш счет: {acertos} правильно и {erros} ошибок.",
+    errorListTitle: "Слова, в которых вы ошиблись:",
+    playAgainBtn: "Играть снова",
+    noErrors: "Поздравляем, вы не сделали ни одной ошибки!",
+
+    // Alerts and Errors
+    noWordsForLevel: "В списке нет слов уровня {level}.",
+    csvError: "Ошибка загрузки данных игры. Проверьте CSV-файл."
   }
 };
